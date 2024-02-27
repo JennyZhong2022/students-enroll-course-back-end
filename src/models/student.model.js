@@ -12,7 +12,13 @@ const studentSchema = new Schema({
   email: {
     type: String,
     
-  }
+  },
+  courses: [
+    {
+      type: String,
+      ref:'Course'
+    }
+  ]
 }, {
   timestamps:true
 })
