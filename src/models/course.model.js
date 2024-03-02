@@ -1,5 +1,8 @@
 const { Schema, model } = require('mongoose')
 
+
+
+
 const courseSchema = new Schema({
   _id: {
     alias: 'code', // code is another name of _id-> virtual property

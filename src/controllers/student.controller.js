@@ -26,9 +26,17 @@ const addStudents = async (req, res) => {
 }
 
 const getAllStudents = async (req, res) => {
-  // Execute the query and wait for the result.
-  const students = await Student.find().exec()
+  const page = parseInt(req.query.page) || 1
+  const pageSize = parseIntI(req.query.pageSize) || 10 
+  const skip=(page-1)*pageSize
+  try { 
+    // Execute the query and wait for the result.
+    const students = await Student.find().limit(pageSize).skip(skip).exec()
   res.json(students)
+  } catch (error) {
+    console.log(error);
+  }
+  
 }
 
 

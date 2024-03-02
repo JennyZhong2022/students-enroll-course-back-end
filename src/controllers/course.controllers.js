@@ -1,17 +1,28 @@
 const Course = require('../models/course.model')
 const Student=require('../models/student.model')
+const Joi=require('joi')
 
 
+const addCourse = async (req, res) => { 
+  const schema = Joi.object({
+    name: Joi.string().required(),
+    description: Joi.string().optional(),
+    code: Joi.string().pattern(/^[a-zA-Z]+[0-9]+$/).message('Invalid code format').required()
 
-const addCourse = async(req, res) => { 
-  const {code, name, description } = req.body
-  const course = new Course({code, name, description })
+  })
+  const validBody = await schema.validateAsync(req.body, {
+    allowUnknown: true,
+    stripUnknown:true
+  })
+
+  // const {code, name, description } = req.body
+  const course = new Course(validBody)
   
   try {
     await course.save()
   } catch (error) {
-    console.error(error)
-  }
+    return res.status(500).json({ message: 'An error occurred while saving the course', error: error.message });
+}
 }
 
 
